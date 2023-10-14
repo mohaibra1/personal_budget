@@ -4,7 +4,7 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 
 //database functions 
-const { getAllEnvelopes, addNewenvelope,getEnvelopeById } = require('./server/db')
+const { getAllEnvelopes, addNewenvelope,getEnvelopeById, updateEnvelope, deleteEnvelope } = require('./server/db')
 
 //port
 const PORT = process.env.PORT || 4001 
@@ -24,7 +24,7 @@ app.get('/', (req, res, next) => {
 //create an envelope
 app.post('/', (req, res, next) => {
     console.log('Creating new envelope....')
-    console.log(req.body)
+    console.log(req.body.id)
     const newEnvelope = addNewenvelope(req.body)
     if(newEnvelope){
         res.send(newEnvelope)
@@ -40,8 +40,24 @@ app.get('/:id', (req, res, next) => {
     res.send(getEnvelopeById(req.params.id))
 })
 
-//update envelope
+//update specific envelope
+app.put('/:id', (req, res, next) => {
+    console.log(req.body.id)
+    const enevelopeToUpdate = updateEnvelope(req.body)
+    if(enevelopeToUpdate){
+        res.send(enevelopeToUpdate)
+    }else{
+        res.status(404).send('Nothing found to update')
+    }
+})
 
+//delete specific envelope
+app.delete('/:id', (req, res, next) => {
+    const isDeleted = deleteEnvelope(req.params.id)
+    if(isDeleted){
+        res.status(204).send('is deleted')
+    }
+})
 
 //server listening port
 app.listen(PORT, () => {
