@@ -1,18 +1,27 @@
 //varaible to store information about your envelopes and total budget
-const envelopes = [{Envelope : "Electricity", total: 2}, {Envelope: 'Food', total: 3}]
+//increase 1 by id when new envelope
+let id = 1
+const envelopes = [{id: id, envelope : "Electricity", total: 2}, {id: id +1, envelope: 'Food', total: 3}]
 
 
-//get all envelope data
+//retrieve all enevelopes
 const getAllEnvelopes = () => {
     return envelopes;
+}
+
+//retrieve specific enevelope
+const getEnvelopeById = (specificId) => {
+    return findEnvelopById(specificId)
 }
 
 //add new envelope to the database
 const addNewenvelope = (newEnvelope) => {
     const isValid = validation(newEnvelope)
     if(isValid){
+        newEnvelope.id = id + 2;
         envelopes.push(newEnvelope)
     }
+    id++
     return newEnvelope
 }
 
@@ -28,7 +37,16 @@ const validation = (newEnvelope) => {
     return true;
 }
 
+const findEnvelopById = (specificId) => {
+    for (let env in envelopes){
+        if (envelopes[env].id == specificId){   
+            return envelopes[env]
+        }
+    }
+}
+
 module.exports = {
     getAllEnvelopes,
     addNewenvelope,
+    getEnvelopeById
 }
