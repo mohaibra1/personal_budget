@@ -4,7 +4,7 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 
 //database functions 
-const { getAllEnvelopes, addNewenvelope } = require('./server/db')
+const { getAllEnvelopes, addNewenvelope,getEnvelopeById } = require('./server/db')
 
 //port
 const PORT = process.env.PORT || 4001 
@@ -22,7 +22,7 @@ app.get('/', (req, res, next) => {
 })
 
 //create an envelope
-app.use('/', (req, res, next) => {
+app.post('/', (req, res, next) => {
     console.log('Creating new envelope....')
     console.log(req.body)
     const newEnvelope = addNewenvelope(req.body)
@@ -32,6 +32,12 @@ app.use('/', (req, res, next) => {
         res.status(404).send('Empty keys!')
     }
    
+})
+
+//retrieve specific envelope
+app.get('/:id', (req, res, next) => {
+    console.log(req.params.id)
+    res.send(getEnvelopeById(req.params.id))
 })
 
 //update envelope
