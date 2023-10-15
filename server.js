@@ -4,7 +4,7 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 
 //database functions 
-const { getAllEnvelopes, addNewenvelope,getEnvelopeById, updateEnvelope, deleteEnvelope } = require('./server/db')
+const { getAllEnvelopes, addNewenvelope,getEnvelopeById, updateEnvelope, deleteEnvelope, transferEnvelope } = require('./server/db')
 
 //port
 const PORT = process.env.PORT || 4001 
@@ -57,6 +57,14 @@ app.delete('/:id', (req, res, next) => {
     if(isDeleted){
         res.status(204).send('is deleted')
     }
+})
+
+//Transfer budgets from different envelopes envelopes/transfer/:from/:to
+app.post('/envelopes/transfer/:from/:to', (req, res, next) => {
+    console.log(req.params.from + " " + req.params.to)
+    const envelopeToTransfer = transferEnvelope(req.params.from, req.params.to)
+
+    res.send(envelopeToTransfer)
 })
 
 //server listening port

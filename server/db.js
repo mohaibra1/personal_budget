@@ -1,7 +1,7 @@
 //varaible to store information about your envelopes and total budget
 //increase 1 by id when new envelope
 let id = 1
-const envelopes = [{id: id, envelope : "Electricity", total: 2}, {id: id +1, envelope: 'Food', total: 3}]
+const envelopes = [{id: id, envelope : "Electricity", total: 250}, {id: id +1, envelope: 'Food', total: 350}]
 
 
 //retrieve all enevelopes
@@ -49,6 +49,16 @@ const deleteEnvelope = (deleteEnvelopeId) => {
     return isDeleted
 }
 
+//transfer envelope from one to another
+const transferEnvelope = (from, to) => {
+  let envelopeFrom = findEnvelopByName(from)
+  let envelopeTo = findEnvelopByName(to)
+
+   envelopeFrom.total += envelopeTo.total
+
+   return envelopeFrom
+}
+
 //validate new object
 const validation = (newEnvelope) => {
     for(let env in newEnvelope){
@@ -68,10 +78,19 @@ const findEnvelopById = (specificId) => {
     }
 }
 
+const findEnvelopByName = (name) => {
+    for(let env in envelopes){
+        if(envelopes[env].envelope == name){
+            return envelopes[env]
+        }
+    }
+}
+
 module.exports = {
     getAllEnvelopes,
     addNewenvelope,
     getEnvelopeById,
     updateEnvelope,
-    deleteEnvelope
+    deleteEnvelope,
+    transferEnvelope
 }
